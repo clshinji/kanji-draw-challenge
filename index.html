@@ -13,9 +13,27 @@
   <!-- ホーム画面 -->
   <div id="screen-home" class="screen active">
     <div class="home-container">
+      <div class="mascot-container" id="home-mascot"></div>
       <h1 class="home-title">かんじ<br>れんしゅう</h1>
       <p class="home-subtitle">小学2年生</p>
+
+      <div class="level-section" id="level-section">
+        <div class="level-badge" id="level-badge"></div>
+        <div class="xp-bar-container">
+          <div class="xp-bar-fill" id="xp-bar-fill"></div>
+        </div>
+        <div class="xp-label" id="xp-label"></div>
+      </div>
+
+      <div id="streak-display"></div>
+
       <div class="home-stats" id="home-stats"></div>
+
+      <div class="garden-preview" id="garden-preview-section">
+        <div class="garden-preview-title">🌿 おにわ</div>
+        <div class="garden-grid" id="garden-grid"></div>
+      </div>
+
       <button class="btn btn-primary btn-large" id="btn-start">
         はじめる
       </button>
@@ -49,6 +67,7 @@
     <div class="practice-container">
       <div class="practice-info">
         <div class="kanji-info" id="kanji-info"></div>
+        <div class="combo-counter" id="combo-counter"></div>
       </div>
       <div class="canvas-area">
         <div class="hanzi-wrapper" id="hanzi-wrapper">
@@ -77,6 +96,8 @@
         <div class="feedback-stamp" id="feedback-stamp"></div>
         <p class="feedback-message" id="feedback-message"></p>
         <div class="feedback-stars" id="feedback-stars"></div>
+        <div class="feedback-xp" id="feedback-xp"></div>
+        <div class="feedback-combo" id="feedback-combo"></div>
         <div class="feedback-buttons">
           <button class="btn btn-control" id="btn-retry">
             <span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4V10H7"/><path d="M3.51 15A9 9 0 1 0 5 6L1 10"/></svg></span>
@@ -89,11 +110,35 @@
       </div>
       <canvas id="canvas-particles" class="particles-canvas"></canvas>
     </div>
+
+    <!-- レベルアップオーバーレイ -->
+    <div class="levelup-overlay" id="levelup-overlay">
+      <div class="levelup-card" id="levelup-card">
+        <div class="mascot-container" id="levelup-mascot"></div>
+        <div class="levelup-label">レベルアップ！</div>
+        <div class="levelup-level" id="levelup-level"></div>
+        <div class="levelup-title" id="levelup-title"></div>
+        <button class="btn btn-primary" id="btn-levelup-ok">やったー！</button>
+      </div>
+    </div>
+
+    <!-- バッジポップアップ -->
+    <div class="badge-popup" id="badge-popup">
+      <div class="badge-card">
+        <div class="badge-icon" id="badge-icon"></div>
+        <div class="badge-name" id="badge-name"></div>
+        <div class="badge-desc" id="badge-desc"></div>
+        <button class="btn btn-primary" id="btn-badge-ok">すごい！</button>
+      </div>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
   <script src="js/kanji-data.js"></script>
   <script src="js/progress.js"></script>
+  <script src="js/game-state.js"></script>
+  <script src="js/mascot.js"></script>
+  <script src="js/garden.js"></script>
   <script src="js/canvas-drawing.js"></script>
   <script src="js/stroke-guide.js"></script>
   <script src="js/feedback.js"></script>

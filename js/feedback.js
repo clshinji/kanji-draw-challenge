@@ -8,6 +8,7 @@ const Feedback = (() => {
   let particleCanvas, particleCtx;
   let particles = [];
   let particleAnimId = null;
+  let _lastResult = null;
 
   function init() {
     particleCanvas = document.getElementById('canvas-particles');
@@ -59,13 +60,98 @@ const Feedback = (() => {
       _startParticles(stars);
     }
 
+    _lastResult = { stars, totalMistakes };
     return stars;
+  }
+
+  /**
+   * XP獲得アニメーションを表示
+   */
+  function showXP(xpGained) {
+    const xpEl = document.getElementById('feedback-xp');
+    if (!xpEl) return;
+    xpEl.textContent = '+' + xpGained + ' XP';
+    xpEl.style.display = 'flex';
+    // Reset animation
+    xpEl.style.animation = 'none';
+    xpEl.offsetHeight; // force reflow
+    xpEl.style.animation = 'bounce-in 0.5s ease-out 0.4s both';
+  }
+
+  /**
+   * コンボ表示
+   */
+  function showCombo(combo) {
+    const comboEl = document.getElementById('feedback-combo');
+    if (!comboEl || combo < 2) {
+      if (comboEl) comboEl.classList.remove('active');
+      return;
+    }
+    comboEl.textContent = combo + 'れんぞく！🔥';
+    comboEl.classList.add('active');
+    comboEl.style.animation = 'none';
+    comboEl.offsetHeight;
+    comboEl.style.animation = 'combo-pop 0.4s ease-out 0.6s both';
+  }
+
+  /**
+   * レベルアップ演出
+   */
+  function showLevelUp(level, title, onClose) {
+    const overlay = document.getElementById('levelup-overlay');
+    if (!overlay) { if (onClose) onClose(); return; }
+
+    // Render celebrating mascot
+    Mascot.renderTo('levelup-mascot', 'celebrating', 100);
+
+    document.getElementById('levelup-level').textContent = 'Lv.' + level;
+    document.getElementById('levelup-title').textContent = title;
+
+    overlay.classList.add('active');
+
+    const btn = document.getElementById('btn-levelup-ok');
+    const handler = function () {
+      overlay.classList.remove('active');
+      btn.removeEventListener('click', handler);
+      if (onClose) setTimeout(onClose, 300);
+    };
+    btn.addEventListener('click', handler);
+  }
+
+  /**
+   * バッジポップアップ
+   */
+  function showBadge(badge, onClose) {
+    const popup = document.getElementById('badge-popup');
+    if (!popup) { if (onClose) onClose(); return; }
+
+    document.getElementById('badge-icon').textContent = badge.icon;
+    document.getElementById('badge-name').textContent = badge.name;
+    document.getElementById('badge-desc').textContent = badge.desc;
+
+    popup.classList.add('active');
+
+    const btn = document.getElementById('btn-badge-ok');
+    const handler = function () {
+      popup.classList.remove('active');
+      btn.removeEventListener('click', handler);
+      if (onClose) setTimeout(onClose, 300);
+    };
+    btn.addEventListener('click', handler);
   }
 
   function hide() {
     const overlay = document.getElementById('feedback-overlay');
     overlay.classList.remove('active');
     _stopParticles();
+
+    // Reset XP and combo displays
+    const xpEl = document.getElementById('feedback-xp');
+    if (xpEl) xpEl.style.display = 'none';
+    const comboEl = document.getElementById('feedback-combo');
+    if (comboEl) comboEl.classList.remove('active');
+
+    _lastResult = null;
   }
 
   /** 星SVGを生成 */
@@ -77,7 +163,7 @@ const Feedback = (() => {
     svg.classList.add('feedback-star-icon');
     const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
     polygon.setAttribute('points', '12,2 15,9 22,9 16.5,14 18.5,21 12,17 5.5,21 7.5,14 2,9 9,9');
-    polygon.setAttribute('fill', '#E8B931');
+    polygon.setAttribute('fill', '#F5D060');
     svg.appendChild(polygon);
     return svg;
   }
@@ -94,7 +180,7 @@ const Feedback = (() => {
     outer.setAttribute('cy', '60');
     outer.setAttribute('r', '50');
     outer.setAttribute('fill', 'none');
-    outer.setAttribute('stroke', '#EE6C4D');
+    outer.setAttribute('stroke', '#F2956B');
     outer.setAttribute('stroke-width', '5');
     svg.appendChild(outer);
 
@@ -103,7 +189,7 @@ const Feedback = (() => {
     inner.setAttribute('cy', '60');
     inner.setAttribute('r', '35');
     inner.setAttribute('fill', 'none');
-    inner.setAttribute('stroke', '#EE6C4D');
+    inner.setAttribute('stroke', '#F2956B');
     inner.setAttribute('stroke-width', '4');
     svg.appendChild(inner);
 
@@ -117,37 +203,33 @@ const Feedback = (() => {
     svg.setAttribute('width', '100');
     svg.setAttribute('height', '100');
 
-    // 顔の丸
     const face = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     face.setAttribute('cx', '60');
     face.setAttribute('cy', '60');
     face.setAttribute('r', '50');
     face.setAttribute('fill', '#FFFCF7');
-    face.setAttribute('stroke', '#E8B931');
+    face.setAttribute('stroke', '#F5D060');
     face.setAttribute('stroke-width', '4');
     svg.appendChild(face);
 
-    // 左目
     const eyeL = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     eyeL.setAttribute('cx', '42');
     eyeL.setAttribute('cy', '48');
     eyeL.setAttribute('r', '5');
-    eyeL.setAttribute('fill', '#2D2A26');
+    eyeL.setAttribute('fill', '#3D3832');
     svg.appendChild(eyeL);
 
-    // 右目
     const eyeR = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     eyeR.setAttribute('cx', '78');
     eyeR.setAttribute('cy', '48');
     eyeR.setAttribute('r', '5');
-    eyeR.setAttribute('fill', '#2D2A26');
+    eyeR.setAttribute('fill', '#3D3832');
     svg.appendChild(eyeR);
 
-    // 口（笑顔の曲線）
     const mouth = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     mouth.setAttribute('d', 'M38 68 Q60 90 82 68');
     mouth.setAttribute('fill', 'none');
-    mouth.setAttribute('stroke', '#2D2A26');
+    mouth.setAttribute('stroke', '#3D3832');
     mouth.setAttribute('stroke-width', '3.5');
     mouth.setAttribute('stroke-linecap', 'round');
     svg.appendChild(mouth);
@@ -220,10 +302,10 @@ const Feedback = (() => {
     particles = [];
 
     const numParticles = stars === 3 ? 60 : 30;
-    const colors = ['#E8B931', '#EE6C4D', '#3D5A80', '#5B9A6F', '#FFD700', '#FF6B8A'];
+    const colors = ['#F5D060', '#F2956B', '#5A8F6E', '#7ABCE0', '#F5A0B8', '#FFB7C5'];
 
     for (let i = 0; i < numParticles; i++) {
-      const isStarShape = Math.random() < 0.3;
+      const shapeRand = Math.random();
       particles.push({
         x: Math.random() * window.innerWidth,
         y: -20 - Math.random() * 200,
@@ -233,7 +315,7 @@ const Feedback = (() => {
         color: colors[Math.floor(Math.random() * colors.length)],
         rotation: Math.random() * Math.PI * 2,
         rotSpeed: (Math.random() - 0.5) * 0.15,
-        isStar: isStarShape,
+        shape: shapeRand < 0.25 ? 'star' : shapeRand < 0.5 ? 'leaf' : shapeRand < 0.7 ? 'petal' : 'rect',
         opacity: 1,
       });
     }
@@ -266,8 +348,12 @@ const Feedback = (() => {
       particleCtx.rotate(p.rotation);
       particleCtx.globalAlpha = p.opacity;
 
-      if (p.isStar) {
+      if (p.shape === 'star') {
         _drawStar(particleCtx, 0, 0, p.size, p.color);
+      } else if (p.shape === 'leaf') {
+        _drawLeaf(particleCtx, 0, 0, p.size, p.color);
+      } else if (p.shape === 'petal') {
+        _drawPetal(particleCtx, 0, 0, p.size, p.color);
       } else {
         particleCtx.fillStyle = p.color;
         particleCtx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
@@ -300,6 +386,23 @@ const Feedback = (() => {
     ctx.fill();
   }
 
+  function _drawLeaf(ctx, x, y, size, color) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(x, y - size);
+    ctx.quadraticCurveTo(x + size * 0.8, y - size * 0.3, x, y + size * 0.6);
+    ctx.quadraticCurveTo(x - size * 0.8, y - size * 0.3, x, y - size);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function _drawPetal(ctx, x, y, size, color) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.ellipse(x, y, size * 0.4, size, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
   function _stopParticles() {
     if (particleAnimId) {
       cancelAnimationFrame(particleAnimId);
@@ -311,5 +414,5 @@ const Feedback = (() => {
     }
   }
 
-  return { init, show, hide };
+  return { init, show, hide, showXP, showCombo, showLevelUp, showBadge };
 })();
