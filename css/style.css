@@ -754,6 +754,7 @@ html, body {
   position: relative;
   z-index: 1;
   font-family: var(--font-kanji);
+  touch-action: none;
 }
 
 .hanzi-target svg {
