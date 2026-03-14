@@ -35,13 +35,13 @@ const KanjiRenderer = (() => {
       showOutline: true,
       showCharacter: false,
       strokeColor: '#3D3832',
-      outlineColor: '#D4E8DC',
-      highlightColor: '#F2956B',
+      outlineColor: '#A8D48C',
+      highlightColor: '#FFD700',
       drawingColor: '#3D3832',
       drawingWidth: 6,
       highlightOnComplete: true,
       showHintAfterMisses: 2,
-      highlightCompleteColor: '#5A8F6E',
+      highlightCompleteColor: '#5D8C3E',
       charDataLoader: _charDataLoader,
     });
   }
