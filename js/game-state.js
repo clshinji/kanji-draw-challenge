@@ -193,9 +193,24 @@ const GameState = (() => {
     state.practiceToday++;
     state.todayDate = today;
 
+    var lockedBefore = [];
+    Object.keys(CATEGORY_UNLOCK).forEach(function (catId) {
+      if (CATEGORY_UNLOCK[catId] > 0 && state.totalXP < CATEGORY_UNLOCK[catId]) {
+        lockedBefore.push(catId);
+      }
+    });
+
     const oldLevel = getLevel();
 
     state.totalXP += xp;
+
+    var newUnlocks = [];
+    lockedBefore.forEach(function (catId) {
+      if (state.totalXP >= CATEGORY_UNLOCK[catId]) {
+        var cat = CATEGORIES.find(function (c) { return c.id === catId; });
+        newUnlocks.push({ id: catId, label: cat ? cat.label : catId });
+      }
+    });
 
     const newLevel = getLevel();
 
@@ -236,6 +251,7 @@ const GameState = (() => {
       newLevel: newLevel.level,
       newTitle: newLevel.title,
       newBadges,
+      newUnlocks,
       combo: state.combo,
     };
   }

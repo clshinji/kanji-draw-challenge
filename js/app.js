@@ -263,7 +263,7 @@
     _updateComboDisplay();
 
     // レベルアップ & バッジのシーケンス
-    if (gameResult.levelUp || gameResult.newBadges.length > 0) {
+    if (gameResult.levelUp || (gameResult.newUnlocks && gameResult.newUnlocks.length > 0) || gameResult.newBadges.length > 0) {
       _schedulePostFeedback(gameResult);
     }
   }
@@ -305,6 +305,14 @@
     if (gameResult.levelUp) {
       steps.push(function (next) {
         Feedback.showLevelUp(gameResult.newLevel, gameResult.newTitle, next);
+      });
+    }
+
+    if (gameResult.newUnlocks) {
+      gameResult.newUnlocks.forEach(function (unlock) {
+        steps.push(function (next) {
+          Feedback.showCategoryUnlock(unlock, next);
+        });
       });
     }
 

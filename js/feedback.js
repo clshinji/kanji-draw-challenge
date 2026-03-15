@@ -149,6 +149,26 @@ const Feedback = (() => {
     btn.addEventListener('click', handler);
   }
 
+  /**
+   * カテゴリアンロック演出
+   */
+  function showCategoryUnlock(unlock, onClose) {
+    var popup = document.getElementById('unlock-popup');
+    if (!popup) { if (onClose) onClose(); return; }
+    Mascot.renderTo('unlock-mascot', 'celebrating', 100);
+    document.getElementById('unlock-category-name').textContent = unlock.label;
+    document.getElementById('unlock-message').textContent =
+      unlock.label + 'がつかえるようになったよ！';
+    popup.classList.add('active');
+    var btn = document.getElementById('btn-unlock-ok');
+    var handler = function () {
+      popup.classList.remove('active');
+      btn.removeEventListener('click', handler);
+      if (onClose) setTimeout(onClose, 300);
+    };
+    btn.addEventListener('click', handler);
+  }
+
   function hide() {
     const overlay = document.getElementById('feedback-overlay');
     overlay.classList.remove('active');
@@ -241,5 +261,5 @@ const Feedback = (() => {
     }
   }
 
-  return { init, show, hide, showXP, showCombo, showLevelUp, showBadge };
+  return { init, show, hide, showXP, showCombo, showLevelUp, showBadge, showCategoryUnlock };
 })();

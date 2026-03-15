@@ -1120,6 +1120,63 @@ html, body {
   color: var(--color-text-light);
 }
 
+/* カテゴリアンロックポップアップ */
+.unlock-popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 205;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.unlock-popup.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.unlock-card {
+  background: linear-gradient(135deg, #C6C6C6, #D8D8D8);
+  border: 4px solid #5FE3E3;
+  border-top-color: #8FF0F0;
+  border-left-color: #8FF0F0;
+  border-radius: 0px;
+  padding: 36px;
+  box-shadow: 5px 5px 0px #3AA8A8;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  max-width: 320px;
+  width: 85%;
+  animation: level-up 0.8s ease-out;
+}
+
+.unlock-label {
+  font-size: 1rem;
+  color: #5FE3E3;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-shadow: 1px 1px 0px #2A9A9A;
+}
+
+.unlock-category-name {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-shadow: 2px 2px 0px #3A5D25;
+}
+
+.unlock-message {
+  font-size: 0.95rem;
+  color: var(--color-text-light);
+}
+
 .particles-canvas {
   position: fixed;
   inset: 0;
