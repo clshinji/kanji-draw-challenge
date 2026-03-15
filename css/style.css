@@ -748,6 +748,62 @@ html, body {
   border-top: 1px dashed #CCC;
 }
 
+/* ローディング表示 */
+.kanji-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  z-index: 2;
+  background: #FFFEF9;
+}
+
+.kanji-loading-pickaxe {
+  font-size: 2.5rem;
+  animation: loading-dig 0.8s ease-in-out infinite;
+}
+
+@keyframes loading-dig {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-30deg); }
+  50% { transform: rotate(10deg); }
+}
+
+.kanji-loading-text {
+  font-family: var(--font-main);
+  font-size: 1rem;
+  color: var(--color-text-light);
+  letter-spacing: 0.1em;
+}
+
+.kanji-loading-dots {
+  display: flex;
+  gap: 4px;
+  font-family: var(--font-main);
+  font-size: 1.2rem;
+  color: var(--color-primary);
+}
+
+.kanji-loading-dots span {
+  animation: loading-dot 1.2s ease-in-out infinite;
+}
+
+.kanji-loading-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.kanji-loading-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes loading-dot {
+  0%, 60%, 100% { opacity: 0.2; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-4px); }
+}
+
 .hanzi-target {
   width: 100%;
   height: 100%;

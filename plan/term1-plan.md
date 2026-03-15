@@ -25,7 +25,7 @@
 
 ## Phase 1: UX改善（High優先度）
 
-### Task 1-1: 漢字表示のローディングインジケータ
+### Task 1-1: 漢字表示のローディングインジケータ ✅ 完了
 
 - **問題**: CDNからのfetch待ち中に何も表示されない
 - **方針**: `setKanji()` 内でローディングUI表示、HanziWriter描画完了で除去
@@ -33,6 +33,10 @@
 - **対象ファイル**:
   - `js/canvas-drawing.js`
   - `css/style.css`
+- **実装詳細**:
+  - `setKanji()` で `target.innerHTML` クリア直後にローディング要素を挿入
+  - `charDataLoader` コールバックをラップし、`onLoad` / `onError` 両方でローディングを除去
+  - ⛏️ アイコンの採掘アニメーション + ドットが順に跳ねるアニメーションで待機感を演出
 
 ### Task 1-2: セーブデータのクラウド同期
 

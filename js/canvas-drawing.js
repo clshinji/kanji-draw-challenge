@@ -26,6 +26,9 @@ const KanjiRenderer = (() => {
     const target = document.getElementById(_targetId);
     target.innerHTML = '';
 
+    // ローディング表示
+    _showLoading(target);
+
     const size = Math.min(target.clientWidth, target.clientHeight);
 
     writer = HanziWriter.create(_targetId, char, {
@@ -42,8 +45,31 @@ const KanjiRenderer = (() => {
       highlightOnComplete: true,
       showHintAfterMisses: 2,
       highlightCompleteColor: '#5D8C3E',
-      charDataLoader: _charDataLoader,
+      charDataLoader: function (c, onLoad, onError) {
+        _charDataLoader(c, function (data) {
+          _hideLoading(target);
+          onLoad(data);
+        }, function () {
+          _hideLoading(target);
+          onError();
+        });
+      },
     });
+  }
+
+  function _showLoading(container) {
+    var el = document.createElement('div');
+    el.className = 'kanji-loading';
+    el.innerHTML =
+      '<div class="kanji-loading-pickaxe">⛏️</div>' +
+      '<div class="kanji-loading-text">よみこみちゅう</div>' +
+      '<div class="kanji-loading-dots"><span>.</span><span>.</span><span>.</span></div>';
+    container.appendChild(el);
+  }
+
+  function _hideLoading(container) {
+    var el = container.querySelector('.kanji-loading');
+    if (el) el.remove();
   }
 
   function _charDataLoader(char, onLoad, onError) {
