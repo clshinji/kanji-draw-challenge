@@ -61,7 +61,14 @@ const KanjiRenderer = (() => {
             return r.json();
           })
           .then(onLoad)
-          .catch(onError);
+          .catch(function () {
+            // CDN両方にない場合、ローカルフォールバックデータを使用
+            if (typeof KANJI_FALLBACK_DATA !== 'undefined' && KANJI_FALLBACK_DATA[char]) {
+              onLoad(KANJI_FALLBACK_DATA[char]);
+            } else {
+              onError();
+            }
+          });
       });
   }
 
