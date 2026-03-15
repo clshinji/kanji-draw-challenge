@@ -8,7 +8,7 @@ const CloudSync = (() => {
   const DEVICE_ID_KEY = 'kanji-device-id';
   const STUB_SAVE_KEY = 'kanji-cloud-stub';
   const STUB_TRANSFER_KEY = 'kanji-transfer-stub';
-  const API_BASE = ''; // 空 = スタブモード
+  const API_BASE = 'https://lojuomjut1.execute-api.ap-northeast-1.amazonaws.com/prod'; // 空 = スタブモード
 
   function _isStubMode() {
     return !API_BASE;

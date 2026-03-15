@@ -1,0 +1,36 @@
+{
+  "version": "52.0.0",
+  "files": {
+    "c38bb3ab67203e8e5037fd771248bad98ed46dce04995e3d1a3ed1235a17a2f5": {
+      "displayName": "KanjiSyncHandler/Code",
+      "source": {
+        "path": "asset.c38bb3ab67203e8e5037fd771248bad98ed46dce04995e3d1a3ed1235a17a2f5",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "current_account-ap-northeast-1-7b6fb4cd": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-northeast-1",
+          "objectKey": "c38bb3ab67203e8e5037fd771248bad98ed46dce04995e3d1a3ed1235a17a2f5.zip",
+          "region": "ap-northeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-ap-northeast-1"
+        }
+      }
+    },
+    "3188299ad50ed08ef28303a339c9214d767c3b616f3a77ea7372a4a898947230": {
+      "displayName": "KanjiSyncStack Template",
+      "source": {
+        "path": "KanjiSyncStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-ap-northeast-1-81e7d60e": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-northeast-1",
+          "objectKey": "3188299ad50ed08ef28303a339c9214d767c3b616f3a77ea7372a4a898947230.json",
+          "region": "ap-northeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-ap-northeast-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

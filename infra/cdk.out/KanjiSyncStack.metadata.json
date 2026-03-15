@@ -1,0 +1,258 @@
+{
+  "/KanjiSyncStack/KanjiSaves": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "KanjiSavesE081C894"
+      }
+    }
+  ],
+  "/KanjiSyncStack/KanjiTransfers": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "KanjiTransfers28A0B790"
+      }
+    }
+  ],
+  "/KanjiSyncStack/ApiUrl": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ApiUrl"
+    }
+  ],
+  "/KanjiSyncStack/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/KanjiSyncStack/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSaves/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSavesE081C894"
+    }
+  ],
+  "/KanjiSyncStack/KanjiTransfers/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiTransfers28A0B790"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncHandler/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncHandler393FBE74"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApi327EF2A1"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Account": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiAccount3A0B0D16"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Endpoint": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiEndpoint9FE26015"
+    }
+  ],
+  "/KanjiSyncStack/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncHandler/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncHandlerServiceRole1AFAC0E9"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/CloudWatchRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiCloudWatchRole033DC66A"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Deployment/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiDeployment5CFBE6135e96a41a45fb5a68692a88a9604589ff"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/DeploymentStage.prod/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiDeploymentStageprod5DC60C64"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncHandler/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncHandlerServiceRoleDefaultPolicy7B457295"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiOPTIONS22D78CE5"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapi0054181C"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapiOPTIONSAAC90339"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/save/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapisave09341A47"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/transfer/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapitransferA5D97D4C"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/save/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapisaveOPTIONSBD4E631D"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/save/POST/ApiPermission.KanjiSyncStackKanjiSyncApi2D33F49D.POST..api.save": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapisavePOSTApiPermissionKanjiSyncStackKanjiSyncApi2D33F49DPOSTapisave00DB82B7"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/save/POST/ApiPermission.Test.KanjiSyncStackKanjiSyncApi2D33F49D.POST..api.save": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapisavePOSTApiPermissionTestKanjiSyncStackKanjiSyncApi2D33F49DPOSTapisave6B8A7C7F"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/save/POST/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapisavePOSTA14EF881"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/save/{deviceId}/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapisavedeviceIdC7C5A28D"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/transfer/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapitransferOPTIONSF0BA119F"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/transfer/generate/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapitransfergenerate516214AD"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/transfer/redeem/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapitransferredeem44B702E4"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/save/{deviceId}/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapisavedeviceIdOPTIONS3851647A"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/save/{deviceId}/GET/ApiPermission.KanjiSyncStackKanjiSyncApi2D33F49D.GET..api.save.{deviceId}": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapisavedeviceIdGETApiPermissionKanjiSyncStackKanjiSyncApi2D33F49DGETapisavedeviceId298AA783"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/save/{deviceId}/GET/ApiPermission.Test.KanjiSyncStackKanjiSyncApi2D33F49D.GET..api.save.{deviceId}": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapisavedeviceIdGETApiPermissionTestKanjiSyncStackKanjiSyncApi2D33F49DGETapisavedeviceId83F64488"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/save/{deviceId}/GET/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapisavedeviceIdGETADF89E19"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/transfer/generate/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapitransfergenerateOPTIONS650139B7"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/transfer/generate/POST/ApiPermission.KanjiSyncStackKanjiSyncApi2D33F49D.POST..api.transfer.generate": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapitransfergeneratePOSTApiPermissionKanjiSyncStackKanjiSyncApi2D33F49DPOSTapitransfergenerateCC22F613"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/transfer/generate/POST/ApiPermission.Test.KanjiSyncStackKanjiSyncApi2D33F49D.POST..api.transfer.generate": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapitransfergeneratePOSTApiPermissionTestKanjiSyncStackKanjiSyncApi2D33F49DPOSTapitransfergenerate97A93C90"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/transfer/generate/POST/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapitransfergeneratePOSTB276404D"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/transfer/redeem/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapitransferredeemOPTIONSAE9083B4"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/transfer/redeem/POST/ApiPermission.KanjiSyncStackKanjiSyncApi2D33F49D.POST..api.transfer.redeem": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapitransferredeemPOSTApiPermissionKanjiSyncStackKanjiSyncApi2D33F49DPOSTapitransferredeem30BB7049"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/transfer/redeem/POST/ApiPermission.Test.KanjiSyncStackKanjiSyncApi2D33F49D.POST..api.transfer.redeem": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapitransferredeemPOSTApiPermissionTestKanjiSyncStackKanjiSyncApi2D33F49DPOSTapitransferredeem5F195FA4"
+    }
+  ],
+  "/KanjiSyncStack/KanjiSyncApi/Default/api/transfer/redeem/POST/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KanjiSyncApiapitransferredeemPOST4A9F4868"
+    }
+  ]
+}

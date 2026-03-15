@@ -38,95 +38,83 @@
   - `charDataLoader` コールバックをラップし、`onLoad` / `onError` 両方でローディングを除去
   - ⛏️ アイコンの採掘アニメーション + ドットが順に跳ねるアニメーションで待機感を演出
 
-### Task 1-2: セーブデータのクラウド同期 — フロントエンド ✅ 完了 / バックエンド 🔲 未着手
+### Task 1-2: セーブデータのクラウド同期 ✅ 完了
 
 - **構成**: AWS サーバレス（DynamoDB無料枠 + デバイスIDベース認証）
-- **同期フロー**: 手動同期（アップロード/ダウンロード）をまず実装。自動同期はTerm 2以降
-- **認証方式変更**: Cognito User Pool → デバイスIDベース（UUID）。デバイス間移行は6桁引き継ぎコードで対応
+- **同期フロー**: 手動同期（アップロード/ダウンロード）
+- **認証方式**: デバイスIDベース（UUID）。デバイス間移行は6桁引き継ぎコードで対応
 
-#### フロントエンド実装済み内容
+#### フロントエンド
 
 - `js/cloud-sync.js`（新規）: デバイスID管理(UUID)、同期API、引き継ぎコード、スタブモード
 - 設定画面（`#screen-settings`）新設: 同期ボタン・デバイスID表示・引き継ぎコード生成/入力
 - `API_BASE` を設定するだけで本番APIに切り替わる設計
-- スタブモード（localStorage内で完結）で動作確認済み
-
-#### 残タスク: バックエンド（AWS CDK）
-
-- API Gateway + Lambda + DynamoDB でクラウド保存API構築
-- 引き継ぎコードAPI（生成/消費）
-- `API_BASE` にデプロイ先URLを設定してフロントエンドと接続
-
-#### バックエンド
-
-- API Gateway + Lambda (Node.js)
-- DynamoDB: セーブデータストア
-- Cognito User Pool: 認証トークン（JWT）発行
-- SNS: 管理者通知
-
-#### フロントエンド
-
-- `js/cloud-sync.js`（新規）: 同期ロジック
-- 設定画面（`#screen-settings`）新設: 同期ボタン・ステータス表示
 - データ形式: `{ version, gameState, progress }` を1レコードとして保存
+
+#### バックエンド（AWS CDK）
+
+- **スタック**: `KanjiSyncStack`（1スタック構成）
+- **API Gateway** (REST API): 4エンドポイント
+  - `POST /api/save` — セーブデータのアップロード
+  - `GET /api/save/{deviceId}` — セーブデータのダウンロード
+  - `POST /api/transfer/generate` — 引き継ぎコード生成
+  - `POST /api/transfer/redeem` — 引き継ぎコード消費
+- **Lambda**: Node.js 20, ESM, 単一ハンドラ（SDK v3 ランタイム同梱）
+- **DynamoDB**:
+  - `KanjiSaves`（PK: `deviceId`）— セーブデータ保存、RETAIN
+  - `KanjiTransfers`（PK: `code`, TTL: 24h）— 引き継ぎコード、DESTROY
+- **スロットリング**: burst 10, rate 10
+- **CORS**: `Access-Control-Allow-Origin: *`（ホスティング移行後に制限予定）
 
 #### 対象ファイル
 
-- `js/cloud-sync.js`（新規）
+- `js/cloud-sync.js`
 - `js/app.js`
 - `index.html`
 - `css/style.css`
+- `infra/package.json`
+- `infra/tsconfig.json`
+- `infra/cdk.json`
+- `infra/bin/kanji-sync.ts`
+- `infra/lib/kanji-sync-stack.ts`
+- `infra/lambda/index.mjs`
 
-#### AWSリソース（IaC: AWS CDK, TypeScript）
+#### デプロイ
 
-`infra/` に配置:
+```bash
+aws sso login --profile clshinji
+cd infra
+npm install
+npx cdk bootstrap --profile clshinji   # 初回のみ
+npx cdk deploy --profile clshinji --require-approval never
+```
 
-- `infra/lib/`: CDK スタック定義
-  - バックエンドスタック: API Gateway, Lambda, DynamoDB, Cognito, SNS（管理者通知）
-  - フロントエンドスタック: S3 + CloudFront（OAC）
-- `infra/lambda/`: Lambda 関数のソースコード
-- `cdk deploy` で全リソースを一括構築・更新
+API URL: `https://lojuomjut1.execute-api.ap-northeast-1.amazonaws.com/prod`
 
-#### フロントエンドホスティング移行: GitHub Pages → S3 + CloudFront
+#### Lambda更新手順
 
-- **理由**:
-  - CDKで1スタックに統合管理できる
-  - CloudFront のオリジングループで API Gateway と同一ドメイン配信 → CORS不要に
-  - S3 は CloudFront OAC 経由のみアクセス（直接公開しない）
-  - HTTPS強制、エッジキャッシュによる高速化
-  - CloudFront 無料枠（1TB/月）で実質無料
-- **デプロイ**: `cdk deploy` でフロントエンドの静的ファイルも S3 に自動アップロード
+`infra/lambda/index.mjs` を変更した場合:
 
-#### セキュリティ対策（最低限）
+```bash
+cd infra
+npx cdk deploy --profile clshinji --require-approval never
+```
 
-**API Gateway**:
-- スロットリング設定（レート制限: 例 10 req/sec/IP）で過剰リクエストを防止
-- CORS設定を自ドメインのみに制限
-- リクエストバリデーション（ペイロードサイズ上限、必須フィールド検証）
+CDK が Lambda コードの変更を検知し、自動で再デプロイされる。
 
-**認証・認可**:
-- Cognito User Pool で認証トークン（JWT）を発行
-- ユーザーはアプリ内からセルフ登録（サインアップ）できる
-- Lambda 側で JWT 検証し、自分のデータのみアクセス可能にする（userId ベースのアクセス制御）
-- トークンの有効期限を適切に設定（アクセストークン: 1時間、リフレッシュトークン: 30日）
+#### セキュリティ対策
 
-**管理者通知**:
-- Cognito のトリガー（Post Confirmation Lambda）でユーザー登録時に管理者メールへ通知（SNS or SES）
-- ユーザー情報変更時も同様に Lambda トリガーで管理者へメール通知
-- 通知先メールアドレスは環境変数で設定（Lambda の環境変数 or SSM Parameter Store）
-
-**DynamoDB**:
-- Lambda の IAM ロールで最小権限（該当テーブルへの GetItem/PutItem のみ）
-- パーティションキーに userId を使い、他ユーザーのデータを読み書きできない構造にする
-
-**フロントエンド**:
-- API キーやシークレットをフロントエンドのコードに埋め込まない
-- Cognito SDK でトークン管理（localStorage に生トークンを直接保存しない）
-- インポート時のデータバリデーション（JSONスキーマ検証で不正データの注入を防止）
-
-**インフラ**:
+- API Gateway スロットリング（10 req/sec）
+- Lambda でリクエストバリデーション（ペイロードサイズ上限 100KB、必須フィールド検証）
+- DynamoDB: Lambda の IAM ロールで readWriteData 権限（該当テーブルのみ）
+- CORS: 現在は `*`、ホスティング移行後に自ドメインのみに制限予定
 - CloudWatch Logs でアクセスログを記録
-- 異常なアクセスパターンの監視（無料枠内で可能な範囲）
+
+#### Term 2以降で検討
+
+- フロントエンドホスティング移行（GitHub Pages → S3 + CloudFront）で CORS 不要化
+- 自動同期（定期バックグラウンド同期）
+- 管理者通知（SNS/SES）
 
 ---
 
@@ -157,7 +145,7 @@
 | 2 | Task 1-1（ローディング） | ✅ 完了 |
 | 3 | Task 2-1（カテゴリアンロック演出） | ✅ 完了 |
 | 4 | Task 1-2（クラウド同期 フロントエンド） | ✅ 完了 |
-| 5 | Task 1-2（クラウド同期 バックエンド） | 🔲 未着手 |
+| 5 | Task 1-2（クラウド同期 バックエンド） | ✅ 完了 |
 
 ---
 
