@@ -63,6 +63,25 @@
 
     document.getElementById('btn-done').addEventListener('click', _onDone);
 
+    // 設定画面
+    document.getElementById('btn-settings').addEventListener('click', function () {
+      _showScreen('settings');
+      _initSettingsScreen();
+    });
+
+    document.getElementById('btn-back-settings').addEventListener('click', function () {
+      _showScreen('home');
+      _updateHomeScreen();
+    });
+
+    document.getElementById('btn-copy-device-id').addEventListener('click', function () {
+      _copyToClipboard(CloudSync.getDeviceId(), this);
+    });
+    document.getElementById('btn-upload').addEventListener('click', _handleUpload);
+    document.getElementById('btn-download').addEventListener('click', _handleDownload);
+    document.getElementById('btn-generate-code').addEventListener('click', _handleGenerateCode);
+    document.getElementById('btn-redeem-code').addEventListener('click', _handleRedeemCode);
+
     document.getElementById('btn-retry').addEventListener('click', function () {
       Feedback.hide();
       KanjiRenderer.setKanji(currentKanjiChar);
@@ -354,6 +373,133 @@
       setTimeout(function () {
         KanjiRenderer.startQuiz(_onQuizComplete);
       }, 300);
+    });
+  }
+
+  // --- クリップボードコピー ---
+  function _copyToClipboard(text, btnEl) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        _showCopyFeedback(btnEl);
+      });
+    } else {
+      // フォールバック: 一時的な textarea を使う
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      _showCopyFeedback(btnEl);
+    }
+  }
+
+  function _showCopyFeedback(btnEl) {
+    if (!btnEl) return;
+    var orig = btnEl.textContent;
+    btnEl.textContent = 'コピーした!';
+    setTimeout(function () { btnEl.textContent = orig; }, 1500);
+  }
+
+  // --- 設定画面 ---
+  function _initSettingsScreen() {
+    document.getElementById('settings-device-id').textContent = CloudSync.getDeviceId();
+    document.getElementById('sync-status').textContent = '';
+    document.getElementById('sync-status').className = 'settings-status';
+    document.getElementById('transfer-status').textContent = '';
+    document.getElementById('transfer-status').className = 'settings-status';
+    document.getElementById('transfer-code-display').textContent = '';
+    document.getElementById('transfer-code-input').value = '';
+  }
+
+  function _handleUpload() {
+    var statusEl = document.getElementById('sync-status');
+    statusEl.textContent = 'アップロードちゅう...';
+    statusEl.className = 'settings-status';
+
+    CloudSync.upload().then(function (result) {
+      if (result.success) {
+        statusEl.textContent = 'アップロードしました (' + new Date(result.savedAt).toLocaleString('ja-JP') + ')';
+        statusEl.className = 'settings-status success';
+      } else {
+        statusEl.textContent = result.error || 'アップロードにしっぱいしました';
+        statusEl.className = 'settings-status error';
+      }
+    });
+  }
+
+  function _handleDownload() {
+    if (!confirm('ダウンロードすると、いまのデータがうわがきされます。よろしいですか？')) return;
+
+    var statusEl = document.getElementById('sync-status');
+    statusEl.textContent = 'ダウンロードちゅう...';
+    statusEl.className = 'settings-status';
+
+    CloudSync.download().then(function (result) {
+      if (result.success && result.data) {
+        CloudSync.applySaveData(result.data);
+        GameState.init();
+        statusEl.textContent = 'ダウンロードしました';
+        statusEl.className = 'settings-status success';
+      } else {
+        statusEl.textContent = result.error || 'ダウンロードにしっぱいしました';
+        statusEl.className = 'settings-status error';
+      }
+    });
+  }
+
+  function _handleGenerateCode() {
+    var statusEl = document.getElementById('transfer-status');
+    statusEl.textContent = '';
+    statusEl.className = 'settings-status';
+
+    CloudSync.generateTransferCode().then(function (result) {
+      var displayEl = document.getElementById('transfer-code-display');
+      if (result.success) {
+        displayEl.innerHTML =
+          '<div>' + result.code + '</div>' +
+          '<button class="btn-copy" id="btn-copy-transfer-code">コピー</button>' +
+          '<span class="transfer-code-expires">24じかんゆうこう</span>';
+        document.getElementById('btn-copy-transfer-code').addEventListener('click', function () {
+          _copyToClipboard(result.code, this);
+        });
+      } else {
+        statusEl.textContent = result.error || 'コードのはっこうにしっぱいしました';
+        statusEl.className = 'settings-status error';
+      }
+    });
+  }
+
+  function _handleRedeemCode() {
+    var codeInput = document.getElementById('transfer-code-input');
+    var code = codeInput.value.trim();
+    var statusEl = document.getElementById('transfer-status');
+
+    if (!/^\d{6}$/.test(code)) {
+      statusEl.textContent = '6けたのすうじをにゅうりょくしてください';
+      statusEl.className = 'settings-status error';
+      return;
+    }
+
+    if (!confirm('ひきつぎすると、いまのデータがうわがきされます。よろしいですか？')) return;
+
+    statusEl.textContent = 'ひきつぎちゅう...';
+    statusEl.className = 'settings-status';
+
+    CloudSync.redeemTransferCode(code).then(function (result) {
+      if (result.success && result.data) {
+        CloudSync.applySaveData(result.data);
+        GameState.init();
+        codeInput.value = '';
+        statusEl.textContent = 'ひきつぎかんりょう！';
+        statusEl.className = 'settings-status success';
+      } else {
+        statusEl.textContent = result.error || 'ひきつぎにしっぱいしました';
+        statusEl.className = 'settings-status error';
+      }
     });
   }
 

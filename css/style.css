@@ -1247,6 +1247,182 @@ html, body {
   }
 }
 
+/* ===========================
+   せってい画面
+   =========================== */
+.btn-settings {
+  margin-top: 4px;
+  padding: 10px 24px;
+  font-size: 0.95rem;
+}
+
+.settings-container {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px 20px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.settings-card {
+  width: 100%;
+  max-width: 500px;
+  background: var(--color-card);
+  border: var(--block-border);
+  border-top-color: #E8E8E8;
+  border-left-color: #E8E8E8;
+  border-radius: 0px;
+  padding: 20px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.settings-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+}
+
+.settings-label {
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+}
+
+.settings-device-id {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.settings-copyable {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings-device-id-value {
+  font-size: 0.75rem;
+  color: var(--color-text);
+  background: #fff;
+  border: var(--block-border-light);
+  padding: 6px 10px;
+  word-break: break-all;
+  border-radius: 0px;
+  flex: 1;
+}
+
+.btn-copy {
+  font-family: var(--font-main);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  background: #C6C6C6;
+  border: var(--block-border);
+  border-top-color: #E8E8E8;
+  border-left-color: #E8E8E8;
+  border-radius: 0px;
+  cursor: pointer;
+  color: var(--color-text);
+  box-shadow: 1px 1px 0px #555;
+  white-space: nowrap;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 32px;
+}
+
+.btn-copy:active {
+  transform: translateY(1px);
+  box-shadow: 0 0 0 #555;
+}
+
+.settings-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.settings-actions .btn-control {
+  flex: 1;
+}
+
+.settings-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+}
+
+.settings-btn-full {
+  width: 100%;
+}
+
+.settings-divider {
+  height: 0;
+  border-top: 2px solid #AAA;
+  margin: 4px 0;
+}
+
+.settings-status {
+  font-size: 0.85rem;
+  color: var(--color-text);
+  min-height: 1.2em;
+}
+
+.settings-status.success {
+  color: var(--color-success);
+}
+
+.settings-status.error {
+  color: #C0392B;
+}
+
+.transfer-code-display {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-align: center;
+  color: var(--color-primary);
+  padding: 8px;
+  min-height: 2.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.transfer-code-display .transfer-code-expires {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--color-text-light);
+  margin-top: 4px;
+}
+
+.transfer-code-input {
+  font-family: var(--font-main);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-align: center;
+  padding: 10px;
+  border: var(--block-border);
+  border-radius: 0px;
+  background: #fff;
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  color: var(--color-text);
+}
+
+.transfer-code-input::placeholder {
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  color: #AAA;
+}
+
 @media (max-width: 600px) {
   .home-title {
     font-size: 2.4rem;

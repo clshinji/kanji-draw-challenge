@@ -38,6 +38,66 @@
       <button class="btn btn-primary btn-large" id="btn-start">
         はじめる
       </button>
+
+      <button class="btn btn-control btn-settings" id="btn-settings">
+        <span>⚙ せってい</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- せってい画面 -->
+  <div id="screen-settings" class="screen">
+    <header class="header">
+      <button class="btn btn-back" id="btn-back-settings">
+        <span class="btn-back-icon">&#8249;</span> もどる
+      </button>
+      <h2 class="header-title">せってい</h2>
+      <div class="header-spacer"></div>
+    </header>
+    <div class="settings-container">
+      <div class="settings-card">
+        <h3 class="settings-card-title">セーブデータ</h3>
+        <div class="settings-device-id">
+          <span class="settings-label">デバイスID</span>
+          <div class="settings-copyable">
+            <span class="settings-device-id-value" id="settings-device-id"></span>
+            <button class="btn-copy" id="btn-copy-device-id">コピー</button>
+          </div>
+        </div>
+        <div class="settings-actions">
+          <button class="btn btn-control" id="btn-upload">
+            <span>⬆ アップロード</span>
+          </button>
+          <button class="btn btn-control" id="btn-download">
+            <span>⬇ ダウンロード</span>
+          </button>
+        </div>
+        <div class="settings-status" id="sync-status"></div>
+      </div>
+
+      <div class="settings-card">
+        <h3 class="settings-card-title">ひきつぎ</h3>
+        <p class="settings-desc">べつのデバイスにデータをうつせます</p>
+        <button class="btn btn-control settings-btn-full" id="btn-generate-code">
+          <span>ひきつぎコードをつくる</span>
+        </button>
+        <div class="transfer-code-display" id="transfer-code-display"></div>
+        <div class="settings-divider"></div>
+        <p class="settings-desc">ひきつぎコードをにゅうりょく</p>
+        <input
+          type="text"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          maxlength="6"
+          placeholder="6けたのコード"
+          class="transfer-code-input"
+          id="transfer-code-input"
+        >
+        <button class="btn btn-control settings-btn-full" id="btn-redeem-code">
+          <span>ひきつぎする</span>
+        </button>
+        <div class="settings-status" id="transfer-status"></div>
+      </div>
     </div>
   </div>
 
@@ -167,6 +227,7 @@
   <script src="js/canvas-drawing.js"></script>
   <script src="js/stroke-guide.js"></script>
   <script src="js/feedback.js"></script>
+  <script src="js/cloud-sync.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
