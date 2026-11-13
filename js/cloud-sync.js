@@ -49,7 +49,7 @@ const CloudSync = (() => {
     var gameState = localStorage.getItem('kanji-game-state');
     var progress = localStorage.getItem('kanji-practice-progress');
     return {
-      version: 1,
+      version: 2,
       gameState: gameState ? JSON.parse(gameState) : null,
       progress: progress ? JSON.parse(progress) : null,
       savedAt: new Date().toISOString(),
@@ -59,7 +59,13 @@ const CloudSync = (() => {
   function _applySaveData(data) {
     if (!data) return;
     if (data.gameState) {
-      localStorage.setItem('kanji-game-state', JSON.stringify(data.gameState));
+      // version 1 データの場合、新フィールドを補完
+      var gs = data.gameState;
+      if (gs.coins === undefined) gs.coins = 0;
+      if (!gs.materials) gs.materials = { stone: 0, iron: 0, gold: 0, diamond: 0 };
+      if (!gs.ownedItems) gs.ownedItems = [];
+      if (!gs.gardenDecorations) gs.gardenDecorations = {};
+      localStorage.setItem('kanji-game-state', JSON.stringify(gs));
     }
     if (data.progress) {
       localStorage.setItem('kanji-practice-progress', JSON.stringify(data.progress));

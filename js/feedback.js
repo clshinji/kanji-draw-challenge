@@ -89,6 +89,51 @@ const Feedback = (() => {
   }
 
   /**
+   * コイン獲得アニメーションを表示
+   */
+  function showCoins(amount) {
+    var coinsEl = document.getElementById('feedback-coins');
+    if (!coinsEl) return;
+    coinsEl.innerHTML =
+      '<img src="images/coin.svg" alt="" width="20" height="20" style="image-rendering:pixelated"> +' + amount;
+    coinsEl.style.display = 'flex';
+    coinsEl.style.animation = 'none';
+    coinsEl.offsetHeight;
+    coinsEl.style.animation = 'bounce-in 0.5s ease-out 0.6s both';
+  }
+
+  var MATERIAL_NAMES = { stone: 'いし', iron: 'てつ', gold: 'きん', diamond: 'ダイヤ' };
+  var MATERIAL_IMAGES = {
+    stone: 'images/ore-stone.svg',
+    iron: 'images/ore-iron.svg',
+    gold: 'images/ore-gold.svg',
+    diamond: 'images/ore-diamond.svg',
+  };
+
+  /**
+   * 素材ドロップ表示
+   */
+  function showMaterial(materials) {
+    var el = document.getElementById('feedback-material');
+    if (!el || !materials || materials.length === 0) {
+      if (el) el.style.display = 'none';
+      return;
+    }
+    var html = '';
+    for (var i = 0; i < materials.length; i++) {
+      var m = materials[i];
+      html += '<span class="feedback-material-item">' +
+        '<img src="' + MATERIAL_IMAGES[m] + '" alt="" width="20" height="20" style="image-rendering:pixelated"> ' +
+        MATERIAL_NAMES[m] + '</span>';
+    }
+    el.innerHTML = html;
+    el.style.display = 'flex';
+    el.style.animation = 'none';
+    el.offsetHeight;
+    el.style.animation = 'bounce-in 0.5s ease-out 0.8s both';
+  }
+
+  /**
    * コンボ表示
    */
   function showCombo(combo) {
@@ -101,7 +146,7 @@ const Feedback = (() => {
     comboEl.classList.add('active');
     comboEl.style.animation = 'none';
     comboEl.offsetHeight;
-    comboEl.style.animation = 'combo-pop 0.4s ease-out 0.6s both';
+    comboEl.style.animation = 'combo-pop 0.4s ease-out 1.0s both';
   }
 
   /**
@@ -176,6 +221,10 @@ const Feedback = (() => {
 
     const xpEl = document.getElementById('feedback-xp');
     if (xpEl) xpEl.style.display = 'none';
+    const coinsEl = document.getElementById('feedback-coins');
+    if (coinsEl) coinsEl.style.display = 'none';
+    const materialEl = document.getElementById('feedback-material');
+    if (materialEl) materialEl.style.display = 'none';
     const comboEl = document.getElementById('feedback-combo');
     if (comboEl) comboEl.classList.remove('active');
 
@@ -261,5 +310,5 @@ const Feedback = (() => {
     }
   }
 
-  return { init, show, hide, showXP, showCombo, showLevelUp, showBadge, showCategoryUnlock };
+  return { init, show, hide, showXP, showCoins, showMaterial, showCombo, showLevelUp, showBadge, showCategoryUnlock };
 })();

@@ -77,6 +77,52 @@
     document.getElementById('btn-copy-device-id').addEventListener('click', function () {
       _copyToClipboard(CloudSync.getDeviceId(), this);
     });
+    // ショップ画面
+    document.getElementById('btn-shop').addEventListener('click', function () {
+      if (!Shop.isUnlocked()) return;
+      _showScreen('shop');
+      Shop.showTab('items', 'shop-container');
+      document.getElementById('shop-tab-items').classList.add('active');
+      document.getElementById('shop-tab-inventory').classList.remove('active');
+    });
+
+    document.getElementById('btn-back-shop').addEventListener('click', function () {
+      _showScreen('home');
+      _updateHomeScreen();
+    });
+
+    document.getElementById('shop-tab-items').addEventListener('click', function () {
+      this.classList.add('active');
+      document.getElementById('shop-tab-inventory').classList.remove('active');
+      Shop.showTab('items', 'shop-container');
+    });
+
+    document.getElementById('shop-tab-inventory').addEventListener('click', function () {
+      this.classList.add('active');
+      document.getElementById('shop-tab-items').classList.remove('active');
+      Shop.showTab('inventory', 'shop-container');
+    });
+
+    // 庭詳細画面
+    document.getElementById('garden-preview-section').addEventListener('click', function () {
+      _showScreen('garden');
+      Garden.renderDetail('garden-detail-container');
+    });
+
+    document.getElementById('btn-back-garden').addEventListener('click', function () {
+      if (Garden.isEditMode()) Garden.exitEditMode();
+      _showScreen('home');
+      _updateHomeScreen();
+    });
+
+    document.getElementById('btn-garden-edit').addEventListener('click', function () {
+      if (Garden.isEditMode()) {
+        Garden.exitEditMode();
+      } else {
+        Garden.enterEditMode();
+      }
+    });
+
     document.getElementById('btn-upload').addEventListener('click', _handleUpload);
     document.getElementById('btn-download').addEventListener('click', _handleDownload);
     document.getElementById('btn-generate-code').addEventListener('click', _handleGenerateCode);
@@ -137,6 +183,28 @@
     statsEl.innerHTML =
       '<div class="stat-badge"><span class="stat-label">れんしゅう</span> <span class="stat-value">' + practiced + '/' + total + '</span></div>' +
       '<div class="stat-badge"><span class="stat-label">おほし</span> <span class="stat-value">' + totalStars + 'こ</span></div>';
+
+    // コイン残高
+    var coinsEl = document.getElementById('home-coins');
+    if (coinsEl) {
+      coinsEl.innerHTML =
+        '<div class="coin-display">' +
+        '<img src="images/coin.svg" alt="" width="24" height="24" style="image-rendering:pixelated"> ' +
+        '<span>' + GameState.getCoins() + '</span>' +
+        '</div>';
+    }
+
+    // ショップボタン状態
+    var shopBtn = document.getElementById('btn-shop');
+    if (shopBtn) {
+      if (Shop.isUnlocked()) {
+        shopBtn.classList.remove('locked');
+        shopBtn.innerHTML = '<span>🏪 ショップ</span>';
+      } else {
+        shopBtn.classList.add('locked');
+        shopBtn.innerHTML = '<span>🔒 ショップ (' + Shop.getUnlockXP() + 'XP)</span>';
+      }
+    }
 
     Garden.renderPreview('garden-grid', 30);
   }
@@ -278,6 +346,8 @@
 
     // XP表示
     Feedback.showXP(gameResult.xpGained);
+    Feedback.showCoins(gameResult.earnedCoins);
+    Feedback.showMaterial(gameResult.droppedMaterials);
     Feedback.showCombo(gameResult.combo);
     _updateComboDisplay();
 

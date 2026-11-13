@@ -46,6 +46,18 @@ const GameState = (() => {
 
   let state = null;
 
+  // 素材ドロップテーブル
+  const DROP_TABLE = [
+    { type: 'stone', weight: 40 },
+    { type: 'iron', weight: 25 },
+    { type: 'gold', weight: 15 },
+    { type: 'diamond', weight: 5 },
+    { type: null, weight: 15 },
+  ];
+
+  // 素材換金レート
+  const SELL_RATES = { stone: 2, iron: 5, gold: 15, diamond: 50 };
+
   function _defaultState() {
     return {
       totalXP: 0,
@@ -59,7 +71,22 @@ const GameState = (() => {
       totalPracticed: 0,
       practiceToday: 0,
       todayDate: null,
+      coins: 0,
+      materials: { stone: 0, iron: 0, gold: 0, diamond: 0 },
+      ownedItems: [],
+      gardenDecorations: {},
     };
+  }
+
+  function _ensureFields(s) {
+    if (s.coins === undefined) s.coins = 0;
+    if (!s.materials) s.materials = { stone: 0, iron: 0, gold: 0, diamond: 0 };
+    if (!s.materials.stone) s.materials.stone = 0;
+    if (!s.materials.iron) s.materials.iron = 0;
+    if (!s.materials.gold) s.materials.gold = 0;
+    if (!s.materials.diamond) s.materials.diamond = 0;
+    if (!s.ownedItems) s.ownedItems = [];
+    if (!s.gardenDecorations) s.gardenDecorations = {};
   }
 
   function _load() {
@@ -108,6 +135,7 @@ const GameState = (() => {
     const loaded = _load();
     if (loaded) {
       state = loaded;
+      _ensureFields(state);
     } else {
       state = _defaultState();
       _migrateOldData();
@@ -214,6 +242,25 @@ const GameState = (() => {
 
     const newLevel = getLevel();
 
+    // Coin calculation
+    var earnedCoins = stars === 3 ? 10 : stars === 2 ? 5 : 2;
+    earnedCoins += Math.min(state.combo, 5);
+    if (state.streak > 1) earnedCoins += 3;
+    state.coins += earnedCoins;
+
+    // Material drop
+    var droppedMaterials = [];
+    if (stars >= 2) {
+      var rolls = stars === 3 ? 2 : 1;
+      for (var r = 0; r < rolls; r++) {
+        var drop = _rollDrop();
+        if (drop) {
+          state.materials[drop]++;
+          droppedMaterials.push(drop);
+        }
+      }
+    }
+
     // Garden growth
     const currentStage = state.gardenPlots[char] || 0;
     let newStage = currentStage;
@@ -253,7 +300,20 @@ const GameState = (() => {
       newBadges,
       newUnlocks,
       combo: state.combo,
+      earnedCoins: earnedCoins,
+      droppedMaterials: droppedMaterials,
     };
+  }
+
+  function _rollDrop() {
+    var total = DROP_TABLE.reduce(function (sum, d) { return sum + d.weight; }, 0);
+    var roll = Math.random() * total;
+    var cumulative = 0;
+    for (var i = 0; i < DROP_TABLE.length; i++) {
+      cumulative += DROP_TABLE[i].weight;
+      if (roll < cumulative) return DROP_TABLE[i].type;
+    }
+    return null;
   }
 
   function _checkAllPerfect() {
@@ -329,6 +389,50 @@ const GameState = (() => {
     return BADGES;
   }
 
+  function getCoins() {
+    return state.coins;
+  }
+
+  function getMaterials() {
+    return Object.assign({}, state.materials);
+  }
+
+  function getOwnedItems() {
+    return state.ownedItems.slice();
+  }
+
+  function getDecorations() {
+    return Object.assign({}, state.gardenDecorations);
+  }
+
+  function buyItem(itemId, price) {
+    if (state.coins < price) return false;
+    if (state.ownedItems.indexOf(itemId) !== -1) return false;
+    state.coins -= price;
+    state.ownedItems.push(itemId);
+    _save();
+    return true;
+  }
+
+  function sellMaterial(type) {
+    if (!state.materials[type] || state.materials[type] <= 0) return 0;
+    var rate = SELL_RATES[type] || 0;
+    state.materials[type]--;
+    state.coins += rate;
+    _save();
+    return rate;
+  }
+
+  function placeDecoration(slotId, itemId) {
+    state.gardenDecorations[slotId] = itemId;
+    _save();
+  }
+
+  function removeDecoration(slotId) {
+    delete state.gardenDecorations[slotId];
+    _save();
+  }
+
   return {
     init,
     onKanjiPracticed,
@@ -343,6 +447,15 @@ const GameState = (() => {
     isUnlocked,
     getUnlockXP,
     getAllBadgeDefinitions,
+    getCoins,
+    getMaterials,
+    getOwnedItems,
+    getDecorations,
+    buyItem,
+    sellMaterial,
+    placeDecoration,
+    removeDecoration,
     LEVELS,
+    SELL_RATES: SELL_RATES,
   };
 })();

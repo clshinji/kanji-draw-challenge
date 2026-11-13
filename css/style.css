@@ -399,6 +399,50 @@ html, body {
   color: var(--color-primary);
 }
 
+/* コイン残高 */
+.home-coins {
+  display: flex;
+  justify-content: center;
+}
+
+.coin-display {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-card);
+  border: var(--block-border);
+  border-top-color: #E8E8E8;
+  border-left-color: #E8E8E8;
+  border-radius: 0px;
+  padding: 6px 14px;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #FFD700;
+  text-shadow: 1px 1px 0px #A08000;
+  box-shadow: var(--btn-shadow);
+}
+
+.coin-display img {
+  image-rendering: pixelated;
+}
+
+/* ホームアクションボタン */
+.home-action-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.btn-shop {
+  padding: 10px 24px;
+  font-size: 0.95rem;
+}
+
+.btn-shop.locked {
+  opacity: 0.55;
+  cursor: default;
+}
+
 /* ガーデンプレビュー */
 .garden-preview {
   width: 100%;
@@ -410,6 +454,13 @@ html, body {
   border-radius: 0px;
   padding: 12px;
   box-shadow: var(--card-shadow);
+  cursor: pointer;
+  transition: transform 0.08s ease;
+}
+
+.garden-preview:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 #555 !important;
 }
 
 .garden-preview-title {
@@ -991,6 +1042,43 @@ html, body {
   animation: bounce-in 0.5s ease-out 0.4s both;
 }
 
+/* コイン獲得表示 */
+.feedback-coins {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #FFD700;
+  text-shadow: 1px 1px 0px #A08000;
+}
+
+.feedback-coins img {
+  image-rendering: pixelated;
+}
+
+/* 素材ドロップ表示 */
+.feedback-material {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.feedback-material-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-text);
+  background: rgba(255,255,255,0.4);
+  border: 2px solid #AAA;
+  border-radius: 0px;
+  padding: 3px 8px;
+}
+
 /* コンボ表示 */
 .feedback-combo {
   display: none;
@@ -1421,6 +1509,413 @@ html, body {
   font-size: 0.9rem;
   letter-spacing: 0.05em;
   color: #AAA;
+}
+
+/* ===========================
+   ヘッダー内アクションボタン
+   =========================== */
+.btn-header-action {
+  background: #C6C6C6;
+  border: var(--block-border);
+  border-top-color: #E8E8E8;
+  border-left-color: #E8E8E8;
+  border-radius: 0px;
+  padding: 6px 14px;
+  font-family: var(--font-main);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text);
+  cursor: pointer;
+  touch-action: manipulation;
+  box-shadow: 1px 1px 0px #555;
+  min-height: 36px;
+}
+
+/* ===========================
+   庭詳細画面
+   =========================== */
+.garden-detail-container {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px 20px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+}
+
+.garden-detail-section {
+  background: var(--color-card);
+  border: var(--block-border);
+  border-top-color: #E8E8E8;
+  border-left-color: #E8E8E8;
+  border-radius: 0px;
+  padding: 16px;
+  box-shadow: var(--card-shadow);
+}
+
+.garden-detail-section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 10px;
+  text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+}
+
+.garden-detail-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.garden-detail-plot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  padding: 4px;
+  transition: transform 0.08s ease;
+}
+
+.garden-detail-plot:active {
+  transform: translateY(2px);
+}
+
+.garden-detail-plot-label {
+  font-size: 0.75rem;
+  color: var(--color-text);
+  font-family: var(--font-kanji);
+}
+
+.garden-detail-stars {
+  font-size: 0.6rem;
+  color: var(--color-accent-gold);
+}
+
+.garden-plot-info-popup {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-card);
+  border: var(--block-border);
+  border-top-color: #E8E8E8;
+  border-left-color: #E8E8E8;
+  border-radius: 0px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-text);
+  box-shadow: var(--card-shadow);
+  z-index: 50;
+  animation: slide-up 0.3s ease-out;
+  white-space: nowrap;
+}
+
+/* 装飾スロット */
+.garden-deco-section {
+  background: var(--color-card);
+  border: var(--block-border);
+  border-top-color: #E8E8E8;
+  border-left-color: #E8E8E8;
+  border-radius: 0px;
+  padding: 16px;
+  box-shadow: var(--card-shadow);
+}
+
+.garden-deco-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.garden-deco-slot {
+  aspect-ratio: 1;
+  background: #B0B0B0;
+  border: 3px solid #888;
+  border-top-color: #D0D0D0;
+  border-left-color: #D0D0D0;
+  border-radius: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 70px;
+}
+
+.garden-deco-slot.editable {
+  border-color: var(--color-accent-gold);
+  border-top-color: #FFE860;
+  border-left-color: #FFE860;
+  cursor: pointer;
+}
+
+.garden-deco-slot-empty {
+  font-size: 1.5rem;
+  color: #999;
+  font-weight: 700;
+}
+
+.garden-deco-slot-label {
+  font-size: 0.7rem;
+  color: var(--color-text);
+}
+
+.garden-deco-slot img {
+  image-rendering: pixelated;
+}
+
+/* 装飾編集パネル */
+.garden-edit-panel {
+  background: rgba(139, 107, 61, 0.3);
+  border-top: var(--block-border);
+  padding: 12px 16px;
+  flex-shrink: 0;
+}
+
+.garden-edit-panel:empty {
+  display: none;
+}
+
+.garden-edit-title {
+  font-size: 0.85rem;
+  color: #fff;
+  text-shadow: 1px 1px 0px #3A5D25;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.garden-edit-items {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.garden-edit-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-card);
+  border: 3px solid #888;
+  border-top-color: #E8E8E8;
+  border-left-color: #E8E8E8;
+  border-radius: 0px;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: var(--color-text);
+  transition: transform 0.08s ease;
+}
+
+.garden-edit-item.selected {
+  border-color: var(--color-accent-gold);
+  border-top-color: #FFE860;
+  border-left-color: #FFE860;
+  box-shadow: 0 0 0 2px var(--color-accent-gold);
+}
+
+.garden-edit-item:active {
+  transform: translateY(2px);
+}
+
+.garden-edit-empty {
+  font-size: 0.85rem;
+  color: #fff;
+  text-shadow: 1px 1px 0px #3A5D25;
+  text-align: center;
+  padding: 8px;
+}
+
+/* ===========================
+   ショップ画面
+   =========================== */
+.shop-header-coins {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0,0,0,0.2);
+  border: 2px solid #555;
+  border-radius: 0px;
+  padding: 4px 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #FFD700;
+  text-shadow: 1px 1px 0px #A08000;
+}
+
+.shop-header-coins img {
+  image-rendering: pixelated;
+}
+
+.shop-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 8px 20px;
+  flex-shrink: 0;
+}
+
+.shop-tabs .tab {
+  flex: 1;
+  text-align: center;
+}
+
+.shop-container {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 12px 20px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.shop-mascot-message {
+  background: var(--color-accent-warm);
+  color: #fff;
+  border: var(--block-border);
+  border-top-color: #E8A040;
+  border-left-color: #E8A040;
+  border-radius: 0px;
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-align: center;
+  text-shadow: 1px 1px 0px #A0641A;
+  animation: slide-up 0.3s ease-out;
+}
+
+.shop-item-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--color-card);
+  border: var(--block-border);
+  border-top-color: #E8E8E8;
+  border-left-color: #E8E8E8;
+  border-radius: 0px;
+  padding: 12px 16px;
+  box-shadow: var(--card-shadow);
+}
+
+.shop-item-image {
+  width: 48px;
+  height: 48px;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.shop-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.shop-item-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+.shop-item-desc {
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+}
+
+.shop-item-action {
+  flex-shrink: 0;
+}
+
+.shop-buy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.shop-buy-btn img {
+  image-rendering: pixelated;
+}
+
+.shop-item-owned {
+  font-size: 0.85rem;
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+/* 素材換金 */
+.shop-inventory-section {
+  background: var(--color-card);
+  border: var(--block-border);
+  border-top-color: #E8E8E8;
+  border-left-color: #E8E8E8;
+  border-radius: 0px;
+  padding: 16px;
+  box-shadow: var(--card-shadow);
+}
+
+.shop-section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 10px;
+  text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+}
+
+.shop-material-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 2px solid #AAA;
+}
+
+.shop-material-row:last-child {
+  border-bottom: none;
+}
+
+.shop-material-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.shop-material-info img {
+  image-rendering: pixelated;
+}
+
+.shop-material-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.shop-material-count {
+  font-size: 0.9rem;
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+.shop-sell-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.shop-sell-btn img {
+  image-rendering: pixelated;
+}
+
+.shop-material-empty {
+  font-size: 0.85rem;
+  color: var(--color-text-light);
 }
 
 @media (max-width: 600px) {
